@@ -304,6 +304,10 @@ constexpr size_t NumAuxChannels = NumSerialChannels - FirstAuxChannel;
 # define SUPPORT_HANGPRINTER	1
 #endif
 
+#ifndef SUPPORT_HEXAPOD
+# define SUPPORT_HEXAPOD		1
+#endif
+
 #ifndef BOARD_USES_UF2_BINARY
 # define BOARD_USES_UF2_BINARY	0
 #endif
