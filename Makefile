@@ -68,6 +68,8 @@ help:
 	$(Q)echo "  clean               - Clean all build outputs"
 	$(Q)echo "  clean-all           - Clean all build outputs and libraries"
 	$(Q)echo "  clean-<config>      - Clean specific configuration"
+	$(Q)echo "  test                - Run all host-compiled unit tests"
+	$(Q)echo "  test-hexapod        - Run hexapod kinematics regression tests"
 	$(Q)echo "  test-toolchain      - Verify toolchain is accessible"
 	$(Q)echo ""
 	$(Q)echo "Environment variables:"
@@ -85,6 +87,18 @@ help:
 # Build all configurations
 .PHONY: all
 all: $(CONFIGS)
+
+# Host-compiled unit tests (uses native g++, not ARM cross-compiler)
+HOST_CXX ?= g++
+
+.PHONY: test test-hexapod
+test: test-hexapod
+
+test-hexapod: tests/TestHexapodKinematics.cpp
+	$(Q)echo "  CXX     $<"
+	$(Q)$(HOST_CXX) -std=c++17 -O2 -Wall -Wextra -o tests/test_hexapod $< -lm
+	$(Q)echo "  RUN     tests/test_hexapod"
+	$(Q)./tests/test_hexapod
 
 # Verify toolchain
 .PHONY: test-toolchain
