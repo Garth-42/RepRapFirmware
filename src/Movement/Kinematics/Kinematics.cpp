@@ -14,6 +14,7 @@
 #include "HangprinterKinematics.h"
 #include "PolarKinematics.h"
 #include "FiveBarScaraKinematics.h"
+#include "HexapodKinematics.h"
 
 #include <Platform/RepRap.h>
 #include <Movement/Move.h>
@@ -324,6 +325,11 @@ void Kinematics::LimitSpeedAndAcceleration(DDA& dda, const float *_ecv_array nor
 #if SUPPORT_FIVEBARSCARA
 	case KinematicsType::fiveBarScara:
 		return new FiveBarScaraKinematics();
+#endif
+
+#if SUPPORT_HEXAPOD
+	case KinematicsType::hexapod:
+		return new HexapodKinematics();
 #endif
 	}
 }
