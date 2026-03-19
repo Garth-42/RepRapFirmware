@@ -30,3 +30,6 @@
 /.clangd
 /.clang-format
 /src/Temp/
+
+# Test binaries
+/tests/test_hexapod
