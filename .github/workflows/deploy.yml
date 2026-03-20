@@ -74,6 +74,11 @@ jobs:
         run: |
           sed -i "s/# define MAIN_VERSION.\+/# define MAIN_VERSION \"${{ inputs.version }}\"/g" ./RepRapFirmware/src/Version.h
 
+      - name: "Run unit tests"
+        run: |
+          cd ./RepRapFirmware
+          make test
+
       - name: "Set up Eclipse-CDT"
         run: |
           sudo apt-get update -y
@@ -132,21 +137,4 @@ jobs:
           path: |
             ./*.map
 
-      - name: "Prepare files for upload"
-        run: |
-          rm Duet2CombinedFirmware.bin
-          mkdir files
-          mv ./*.bin ./files/
-          mv ./*.uf2 ./files/
-
-      - name: "Upload files to dev feed"
-        uses: Creepios/sftp-action@v1.0.5
-        with:
-          host: pkg.duet3d.com
-          port: 22
-          username: ${{ secrets.PKG_SSH_USER }}
-          password: ${{ secrets.PKG_SSH_PASS }}
-          privateKey: ${{ secrets.PKG_SSH_KEY }}
-          localPath: ./files
-          remotePath: /var/rrf-pkg/dev
 

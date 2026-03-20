@@ -21,7 +21,7 @@
 # elif defined(DUET3MINI_V04)
 #  define DUET3MINI		1
 #  define PLATFORM Duet3Mini
-# elif defined(FMDC_V02) || defined(FMDC_V03)
+# elif defined(FMDC_V03)
 #  define DUET3MINI		1
 #  define PLATFORM FMDC
 # else
@@ -38,6 +38,10 @@
 #endif
 
 #include P_INCLUDE_FILE
+
+// Derive channel counts from platform-specific values
+constexpr size_t FirstAuxChannel = NumUsbChannels;
+constexpr size_t NumAuxChannels = NumSerialChannels - FirstAuxChannel;
 
 // Apply default values to anything not configured
 #ifndef SUPPORT_NONLINEAR_EXTRUSION
@@ -90,6 +94,10 @@
 
 #ifndef SUPPORT_BME280
 # define SUPPORT_BME280			0
+#endif
+
+#ifndef SUPPORT_BME68X
+# define SUPPORT_BME68X			0
 #endif
 
 #ifndef SUPPORT_ADS131A02
@@ -259,6 +267,14 @@
 #define SUPPORT_PHASE_STEPPING	0
 #endif
 
+#ifdef SUPPORT_S_CURVE
+# if SUPPORT_S_CURVE && !SUPPORT_PHASE_STEPPING
+#  error Cannot support S Curve acceleration without phase stepping
+# endif
+#else
+# define SUPPORT_S_CURVE		0
+#endif
+
 #ifndef SUPPORT_PROBE_POINTS_FILE
 # define SUPPORT_PROBE_POINTS_FILE	0
 #endif
@@ -286,6 +302,10 @@
 
 #ifndef SUPPORT_HANGPRINTER
 # define SUPPORT_HANGPRINTER	1
+#endif
+
+#ifndef SUPPORT_HEXAPOD
+# define SUPPORT_HEXAPOD		1
 #endif
 
 #ifndef BOARD_USES_UF2_BINARY

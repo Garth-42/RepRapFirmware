@@ -99,7 +99,7 @@ Network::Network(Platform& p) noexcept : platform(p)
 	interfaces[0] = new LwipEthernetInterface(p);
 # elif defined(DUET_NG) || defined(DUET3MINI_V04)
 	interfaces[0] = nullptr;			// we set this up in Init()
-# elif defined(FMDC_V02) || defined(FMDC_V03)
+# elif defined(FMDC_V03)
 	interfaces[0] = new WiFiInterface(p);
 # elif defined(DUET_M)
 	interfaces[0] = new W5500Interface(p);
@@ -235,7 +235,7 @@ void Network::TerminateResponders(const NetworkInterface *iface, NetworkProtocol
 {
 	for (NetworkResponder *_ecv_from _ecv_null r = responders; r != nullptr; r = r->GetNext())
 	{
-		r->Terminate(protocol, iface);
+		r->TryTerminate(protocol, iface);
 	}
 }
 
@@ -921,7 +921,7 @@ bool Network::FindResponder(Socket *_ecv_from skt, NetworkProtocol protocol) noe
 #if HAS_RESPONDERS
 	for (NetworkResponder *_ecv_from _ecv_null r = responders; r != nullptr; r = r->GetNext())
 	{
-		if (r->Accept(skt, protocol))
+		if (r->TryAccept(skt, protocol))
 		{
 			return true;
 		}

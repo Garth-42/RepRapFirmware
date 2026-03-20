@@ -14,11 +14,14 @@
 #include "HangprinterKinematics.h"
 #include "PolarKinematics.h"
 #include "FiveBarScaraKinematics.h"
+#include "HexapodKinematics.h"
 
 #include <Platform/RepRap.h>
 #include <Movement/Move.h>
 #include <GCodes/GCodes.h>
 #include <GCodes/GCodeBuffer/GCodeBuffer.h>
+
+#include <limits>
 
 const char *_ecv_array const Kinematics::HomeAllFileName = "homeall.g";
 
@@ -323,6 +326,11 @@ void Kinematics::LimitSpeedAndAcceleration(DDA& dda, const float *_ecv_array nor
 	case KinematicsType::fiveBarScara:
 		return new FiveBarScaraKinematics();
 #endif
+
+#if SUPPORT_HEXAPOD
+	case KinematicsType::hexapod:
+		return new HexapodKinematics();
+#endif
 	}
 }
 
@@ -392,7 +400,7 @@ void Kinematics::LimitSpeedAndAcceleration(DDA& dda, const float *_ecv_array nor
 // Round a float value to int32_t and return the original error code if it will fit, else return a microstep position too large error
 /*static*/ void Kinematics::RoundToInt32(MovementError& errorCode, float pos, int32_t& whereToStore) noexcept
 {
-	constexpr float limit = std::numeric_limits<int32_t>::max() - 10;
+	constexpr float limit = (float)(std::numeric_limits<int32_t>::max() - 10);
 	if (fabsf(pos) <= limit)
 	{
 		whereToStore = lrintf(pos);

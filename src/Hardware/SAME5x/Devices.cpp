@@ -115,6 +115,9 @@ constexpr size_t UsbDeviceTaskStackWords = 200;
 static Task<UsbDeviceTaskStackWords> usbDeviceTask;
 
 SerialCDC serialUSB;
+#ifdef SERIAL_USB2_DEVICE
+SerialCDC serialUSB2(1);
+#endif
 
 #else
 
@@ -151,7 +154,7 @@ static void UsbInit() noexcept
 static void SdhcInit() noexcept
 {
 	// Set up SDHC clock
-#if defined(DUET3MINI_V04) || defined(FMDC_V02)
+#if defined(DUET3MINI_V04)
 	// Using SDHC 1
 	hri_mclk_set_AHBMASK_SDHC1_bit(MCLK);
 	hri_gclk_write_PCHCTRL_reg(GCLK, SDHC1_GCLK_ID, GCLK_PCHCTRL_GEN(GclkNumSdhc) | GCLK_PCHCTRL_CHEN);
