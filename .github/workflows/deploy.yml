@@ -87,7 +87,7 @@ jobs:
       - name: "Set up Eclipse-CDT"
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y libarchive-tools default-jre
+          sudo apt-get install -y libarchive-tools default-jre xvfb
           curl -L -O "https://pkg.duet3d.com/eclipse-cpp-2025-09-R-linux-gtk-x86_64.tar.gz"
           sudo bsdtar -x -f ./eclipse-cpp-2025-09-R-linux-gtk-x86_64.tar.gz -C /opt
 
@@ -98,27 +98,27 @@ jobs:
 
       - name: "Set up Eclipse workspace"
         run: |
-          /opt/eclipse/eclipse --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ./workspace -E ArmGccPath=$GITHUB_WORKSPACE/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin -importAll ./
+          xvfb-run /opt/eclipse/eclipse --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ./workspace -E ArmGccPath=$GITHUB_WORKSPACE/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin -importAll ./
 
       - name: "Build RepRapFirmware Duet2"
         run: |
-          /opt/eclipse/eclipse --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ./workspace -E ArmGccPath=$GITHUB_WORKSPACE/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin -cleanBuild "RepRapFirmware/Duet2"
+          xvfb-run /opt/eclipse/eclipse --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ./workspace -E ArmGccPath=$GITHUB_WORKSPACE/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin -cleanBuild "RepRapFirmware/Duet2"
 
       - name: "Build RepRapFirmware Duet2_SBC"
         run: |
-          /opt/eclipse/eclipse --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ./workspace -E ArmGccPath=$GITHUB_WORKSPACE/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin -cleanBuild "RepRapFirmware/Duet2_SBC"
+          xvfb-run /opt/eclipse/eclipse --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ./workspace -E ArmGccPath=$GITHUB_WORKSPACE/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin -cleanBuild "RepRapFirmware/Duet2_SBC"
 
       - name: "Build RepRapFirmare Duet3Mini5plus"
         run: |
-          /opt/eclipse/eclipse --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ./workspace -E ArmGccPath=$GITHUB_WORKSPACE/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin -cleanBuild "RepRapFirmware/Duet3Mini5plus"
+          xvfb-run /opt/eclipse/eclipse --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ./workspace -E ArmGccPath=$GITHUB_WORKSPACE/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin -cleanBuild "RepRapFirmware/Duet3Mini5plus"
 
       - name: "Build RepRapFirmare Duet3_MB6HC"
         run: |
-          /opt/eclipse/eclipse --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ./workspace -E ArmGccPath=$GITHUB_WORKSPACE/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin -cleanBuild "RepRapFirmware/Duet3_MB6HC"
+          xvfb-run /opt/eclipse/eclipse --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ./workspace -E ArmGccPath=$GITHUB_WORKSPACE/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin -cleanBuild "RepRapFirmware/Duet3_MB6HC"
 
       - name: "Build RepRapFirmare Duet3_MB6XD"
         run: |
-          /opt/eclipse/eclipse --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ./workspace -E ArmGccPath=$GITHUB_WORKSPACE/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin -cleanBuild "RepRapFirmware/Duet3_MB6XD"
+          xvfb-run /opt/eclipse/eclipse --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ./workspace -E ArmGccPath=$GITHUB_WORKSPACE/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin -cleanBuild "RepRapFirmware/Duet3_MB6XD"
 
       - name: "Arrange files"
         run: |
