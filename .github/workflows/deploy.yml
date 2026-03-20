@@ -44,6 +44,8 @@ jobs:
       - name: "Check out RepRapFirmware"
         uses: actions/checkout@v5
         with:
+          repository: "Duet3D/RepRapFirmware"
+          ref: "3.6-dev"
           path: "./RepRapFirmware"
 
       - name: "Check out RRFLibraries"
@@ -72,9 +74,14 @@ jobs:
         run: |
           sed -i "s/# define MAIN_VERSION.\+/# define MAIN_VERSION \"${{ inputs.version }}\"/g" ./RepRapFirmware/src/Version.h
 
+      - name: "Check out current branch for tests"
+        uses: actions/checkout@v5
+        with:
+          path: "./RepRapFirmware-tests"
+
       - name: "Run unit tests"
         run: |
-          cd ./RepRapFirmware
+          cd ./RepRapFirmware-tests
           make test
 
       - name: "Set up Eclipse-CDT"
