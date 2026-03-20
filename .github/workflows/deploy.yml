@@ -74,6 +74,11 @@ jobs:
         run: |
           sed -i "s/# define MAIN_VERSION.\+/# define MAIN_VERSION \"${{ inputs.version }}\"/g" ./RepRapFirmware/src/Version.h
 
+      - name: "Run unit tests"
+        run: |
+          cd ./RepRapFirmware
+          make test
+
       - name: "Set up Eclipse-CDT"
         run: |
           sudo apt-get update -y
