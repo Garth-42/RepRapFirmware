@@ -120,6 +120,13 @@ jobs:
         run: |
           xvfb-run /opt/eclipse/eclipse --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ./workspace -E ArmGccPath=$GITHUB_WORKSPACE/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin -cleanBuild "RepRapFirmware/Duet3_MB6XD"
 
+      - name: "Upload Eclipse log on failure"
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eclipse-log
+          path: ./workspace/.metadata/.log
+
       - name: "Arrange files"
         run: |
           mv ./RepRapFirmware/*/*.bin ./
