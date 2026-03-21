@@ -84,6 +84,10 @@ jobs:
           cd ./RepRapFirmware-tests
           make test
 
+      - name: "Remove test checkout Eclipse project files"
+        run: |
+          rm -f ./RepRapFirmware-tests/.project ./RepRapFirmware-tests/.cproject
+
       - name: "Set up Eclipse-CDT"
         run: |
           sudo apt-get update -y
