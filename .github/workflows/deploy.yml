@@ -126,6 +126,7 @@ jobs:
         with:
           name: eclipse-log
           path: ./workspace/.metadata/.log
+          if-no-files-found: warn
 
       - name: "Arrange files"
         run: |
